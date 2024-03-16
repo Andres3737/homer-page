@@ -1,0 +1,23 @@
+@Library('jenkinsLibs') _
+pipeline {
+    agent any
+
+    stages {
+        stage('docker build') {
+            steps {
+                script {
+                    dockerLib.build(DockerfilePath: "Dockerfile",
+                                    DockerImage: "andres37/homerpage:v1-${BUILD_ID}",
+                                    DockerContext: ".")
+                }
+            }
+        }
+        stage('docker push') {
+            steps {
+                script {
+                    dockerLib.push(DockerImage: "andres37/homerpage:v1-${BUILD_ID}")
+                }
+            }
+        }
+    }
+}
